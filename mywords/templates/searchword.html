@@ -4,18 +4,25 @@
 
 <div style="margin-top:35px" class="container">
 
-
-{% if no_of_words ==0 and page!="search" %}
 	<div class="card" >
 	<div class="card-body">
-	<a style="color:black"  href="{{url_for("words.add_word")}}" >
-        <h4 align="center" class="card-title"> There are no words in your list, click to add words.</h4>
+	<a style="color:black"  href="{{url_for("words.my_words")}}" >
+        <h4 align="center" class="card-title"> Click to exit search</h4>
  	</a>
+	</div>
+	</div>
+{% if no_of_words ==0 %}
+	<div class="card" >
+	<div class="card-body">
+	<h1>Word not found</h1>
 	</div>
 	</div>
 {% else %}
 
-{% for word in words.items %}
+
+
+
+{% for word in words %}
 
 	<div class="card" >
 	<div class="card-body">
@@ -70,32 +77,9 @@
   </div>
 
 {% endfor %}
-{% endif %}
 
+{% endif %}
 </div>
-
-<br>
-<footer class="footer fixed-bottom">
-<nav fixed-top aria-label="Page navigation example">
-  <ul align="center" class="pagination justify-content-center">
-{% if words.has_prev %}
-<li class="page-item"><a class="page-link" href="{{ url_for('words.my_words', page=words.page-1) }}"><<</a></li>
-{% else %}
-<li class="page-item disabled"><a class="page-link" href="{{ url_for('words.my_words', page=words.page-1) }}"><<</a></li>
-{% endif %}
-    <li class="page-item"><a class="page-link" href="{{ url_for('words.my_words', page=page_num) }}">{{ words.page }}</a></li>
-
-{% if words.has_next %}
-<li class="page-item"><a class="page-link" href="{{ url_for('words.my_words', page=words.page+1) }}">>></a></li>
-{% else %}
-<li class="page-item disabled"><a class="page-link" href="{{ url_for('words.my_words', page=words.page+1) }}">>></a></li>
-{% endif %}
-
-
-  </ul>
-
-</nav>
-</footer>
 
 <br>
 <br>

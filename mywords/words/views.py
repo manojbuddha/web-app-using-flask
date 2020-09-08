@@ -42,7 +42,11 @@ def add_word():
 			return render_template("addword.html",  word_there=word_there, form=form, search=True, word=current_word.word.capitalize(), word_data=word_data,synonyms=synonyms )
 		meaning = dictionary.meaning(word)
 		word_there = False	
+		if meaning == None:
+			flash("word not found!!")
+			return render_template("addword.html", form=form)
 		keys=list(meaning.keys())
+
 		word_data=""
 		for key in keys:
 			word_data=word_data+str(key)+": "
@@ -65,13 +69,15 @@ def add_word():
 @words.route("/my words", methods=['GET', 'POST'])
 @login_required
 def my_words():	
-	rule = request.url_rule
-	print(rule)
+	#rule = request.url_rule
 	session["page"] = "mywords"
 	page = request.args.get('page', 1, type=int)	
 	words  = Words.query.filter_by(user_id=current_user.id)
 	words = words.paginate(page=page, per_page=10)
-	return render_template("mywords.html",words=words, query="")
+	no_of_words = 0
+	for word in words.items:
+		no_of_words+=1
+	return render_template("mywords.html",words=words,no_of_words=no_of_words)
 
 @words.route("/edit word/<word>", methods=['GET', 'POST'])
 @login_required
@@ -106,21 +112,19 @@ def delete_word(word):
 @words.route("/search", methods=['GET', 'POST'])
 @login_required
 def search_word():	
-	rule = str(request.url_rule)[1:]
-	page = request.args.get('page', 1, type=int)	
-	words  = Words.query.filter_by(user_id=current_user.id)
-	words = words.paginate(page=page, per_page=10)
-	filter = []
+	#rule = str(request.url_rule)[1:]
+	words  = Words.query.filter_by(user_id=current_user.id).all()
 	query = request.form.get("search")
 	if query == "":
 		return redirect(url_for("words.my_words"))
-	#print(query)
-	#print(type(words))
-	for word in words.items:
+	no_of_words=0
+	filter=[]	
+	for word in words:
 		if query in word.word.lower():
+			no_of_words+=1
 			filter.append(word)
-	print(len(filter))
-	return render_template("mywords.html",words=words, query=query,no_of_words=(len(filter)),page=rule)
+
+	return render_template("searchword.html",words=filter, no_of_words=no_of_words)
 
 @words.route("/wordofday/<word>", methods=['GET', 'POST'])
 @login_required
