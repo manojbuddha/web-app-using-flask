@@ -97,16 +97,16 @@ def edit_word(word):
 @words.route("/delete word/<word>", methods=['GET', 'POST'])
 @login_required
 def delete_word(word):
-	word  = Words.query.filter_by(user_id=current_user.id,id=word).all()
-	db.session.delete(word)
-	db.session.commit()
+	words  = Words.query.filter_by(user_id=current_user.id,id=word).all()
+	for word in words:
+		db.session.delete(word)
+		db.session.commit()
 	return redirect(url_for("words.my_words"))
 
 @words.route("/search", methods=['GET', 'POST'])
 @login_required
 def search_word():	
 	rule = str(request.url_rule)[1:]
-	print(rule)
 	page = request.args.get('page', 1, type=int)	
 	words  = Words.query.filter_by(user_id=current_user.id)
 	words = words.paginate(page=page, per_page=10)
