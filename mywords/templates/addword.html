@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container"><br>
+<h1 style="font-family:verdana"; "color:blue">Add word</h1>
+<br>
+<form method="POST">
+{{ form.hidden_tag() }}
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-default">{{form.get_word.label }}</span>
+  </div>
+  {{form.get_word(class="form-control",placeholder="Search word")}}
+  <div class="input-group-append">
+	{{form.search_word( class="btn btn-dark" )}}
+
+  </div>
+</div>
+
+{% if search %}
+
+<div class="card card-body">
+  <h5> {{word}} </h5>
+   {{word_data}}
+   <br>
+   {{synonyms}}
+</div>
+
+<br>
+{% if  word_there %}
+<div class="card card-body">
+<h5>You already added this word to your list!</h5>
+</div>
+<br>
+<br	>
+{% endif %}
+{% if not word_there %}
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">{{form.comment.label}}</span>
+  </div>
+{{form.comment(class="form-control")}}
+
+</div>
+
+
+<br>
+{{form.add_word(class="btn btn-success float-middle")}}
+{% endif %}
+{% endif %}
+
+</form>
+</div>
+<br>
+{% endblock %}

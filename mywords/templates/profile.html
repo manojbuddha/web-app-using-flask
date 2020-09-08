@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+  <h1 class="display-4">Hii, {{current_user.username}}</h1>
+  <hr class="my-4">
+  <p>First name: {{current_user.username.split()[0]}}</p>
+  <p>Last  name: {{current_user.username.split()[1]}}</p>
+  <p>Email : {{current_user.email}}</p>
+  <p>Number of words Added : {{no_of_words}}</p>
+</div>
+
+{% endblock %}

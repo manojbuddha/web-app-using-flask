@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container"><br>
+<h1 style="font-family:verdana"; "color:blue">Edit word</h1>
+<div class="card card-body">
+<p><strong>{{word.word}}:</strong> {{word.word_data.split("*_*")[0]}}</p>
+
+<p>{{word.word_data.split("*_*")[1]}}</p>
+<p>Notes: {{word.comment}}</p>
+</div>
+<br>
+<form method="POST">
+{{ form.hidden_tag() }}
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">{{form.new_comment.label }}</span>
+  </div>
+{{form.new_comment(default=word.comment,class="form-control")}}
+
+</div>
+<br>
+{{form.update_comment(class="btn btn-success")}}
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="containers">
+<div align="center">
+<div  class="card text-left bg-light border-dark " style="top:2vh; width: 30rem;" >
+  <div class="card-body">
+	<h5 align="center" class="card-title">Register</h5>
+<p align="center">Create an account to start using the application.<p>
+<form method="POST">
+    {# This hidden_tag is a CSRF security feature. #}
+    {{ form.hidden_tag() }}
+
+
+  <div class="form-group">
+
+  <div class="row">
+    <div class="col">
+    {{ form.first_name(class="form-control",placeholder="First Name") }}
+    </div>
+    <div class="col">
+ {{ form.last_name(class="form-control",placeholder="Last Name") }}
+    </div>
+  </div>
+
+    <br>
+    {{ form.email(class="form-control",placeholder="example@example.com") }}
+    <br>
+    {{ form.password(class="form-control",placeholder="Password") }}
+    <br>
+    {{ form.confirm_password(class="form-control",placeholder="Confirm Password") }}
+    <br>
+    {{ form.submit(class="btn btn-success btn-block") }}
+</form>
+<br>
+<p align="center">Already, registered click <a href="{{url_for("users.login")}}">here</a> to login</p>
+  </div>
+</div>
+</div>
+</div>
+<br>
+<br>
+{% endblock %}
