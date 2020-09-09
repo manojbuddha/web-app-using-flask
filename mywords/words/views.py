@@ -130,26 +130,35 @@ def search_word():
 @login_required
 def wordofday(word):
 
-	current_words = Words.query.filter_by(user_id=current_user.id,word=word).all()
-	print(current_words)
+	current_words = Words.query.filter_by(user_id=current_user.id,word=word).first()
 	if current_words:	
 			flash("word already present")
+			print("worin",current_words)
 			return redirect(url_for("users.user"))
-	session["page"] = "wordofday"	
-	print(session["worddata"])
-	word_data = session["worddata"]
-	#word=form.get_word.data
-	word = session["word"]
-	#def __init__(self, user_id, word, word_data, comment):
-	#add_word = Words(current_user.id,word.lower(),word_data, form.comment.data.strip())
+	print("wor",current_words)
+	flash("word not present")
+	return redirect(url_for("users.user"))
+	meaning = dictionary.meaning(word)
+	word_data=""
+	syn = dictionary.synonym(word)
+	synonyms = ""
+	for ele in syn:
+		synonyms = synonyms +", "+ele
+	synonyms=synonyms[1:]
+	synonyms = "Synonyms: "+synonyms
+	keys=list(meaning.keys())
+	for key in keys:
+		word_data=word_data+str(key)+": "
+		for line in meaning[str(key)]:
+			word_data=word_data+str(line)+","
+		word_data = word_data[:-2]+"."
+		word_data = word_data+ "\n"
+
+	add_word = Words(current_user.id,word.lower(),word_data, "")
 	db.session.add(add_word)
 	db.session.commit()
-	session["worddata"]="No data"
-	session["word"] = "No data"
-	flash("Word added successfully!!")
-	form.get_word.data = ""
+	flash("Word added to your list successfully!!")
 	return redirect(url_for("users.user"))
-
 
 
 

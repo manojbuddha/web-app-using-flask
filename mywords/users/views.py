@@ -66,16 +66,16 @@ def register():
 def user():
 	#print(url_for("\static\mywordslist.txt"))
 	test = User.query.filter_by(email="test@test.com").first()
-	print(test.id)
+	#print(test.id)
 	with app.open_resource("static/mywordslist.txt","r") as filedata:	
 		filedata=filedata.readlines()
-		print(filedata[0])
+		#print(filedata[0])
 		main_date=filedata[0].split(",")
 		main_date=date(int(main_date[0]),int(main_date[1]),int(main_date[2]))	
 		today = date.today()
 		no_of_days = (today-main_date).days
 		word_of_day =filedata[no_of_days+1] 	
-		print(no_of_days ,word_of_day )
+		#print(no_of_days ,word_of_day )
 	session["page"] = "user"
 
 	return render_template("user.html", word_of_day=word_of_day)

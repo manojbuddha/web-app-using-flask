@@ -3,8 +3,9 @@
 
 <div class=container>
 <br>
-<h3 style="font-family:verdana"; "color:blue" >Welcome {{current_user.username.split()[0]}}</h3>
-<br>
+
+<h3  style="font-family:verdana"; "color:blue" >Welcome {{current_user.username.split()[0]}}</h3>
+
 <div class="card text-center">
   <div class="card-header">
     Word of the day
@@ -13,7 +14,7 @@
     <h5 class="card-title">{{word_of_day.split("-")[0]}}</h5>
     <p class="card-text">{{word_of_day.split("-")[1]}}</p>
 
-<!--    <a href="#" class="btn btn-primary disabled">click to add word to your list</a>-->
+	<!-- <a href="{{url_for("words.wordofday", word=word_of_day.split("-")[0])}}" class="btn btn-primary ">click to add word to your list</a> -->
   </div>
   <div class="card-footer text-muted">
 
