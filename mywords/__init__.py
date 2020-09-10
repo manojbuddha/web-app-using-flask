@@ -7,7 +7,7 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 #############################################################################
-############ CONFIGURATIONS (CAN BE SEPARATE CONFIG.PY FILE) ################
+############################# CONFIGURATIONS  ###############################
 #############################################################################
 
 # Remember you need to set your environment variables at the command line
@@ -21,7 +21,8 @@ app.config['SECRET_KEY'] = 'mysecret'
 ###############################
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')

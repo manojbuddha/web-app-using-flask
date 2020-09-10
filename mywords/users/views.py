@@ -9,6 +9,17 @@ from datetime import date
 
 users = Blueprint("users",__name__)
 
+
+
+@users.route('/admin')
+@login_required
+def tttkkkfff11221133():
+	if current_user.username == "admin admin" and current_user.email == "admin@mywords.com":
+		users = Users.query.all()
+		return render_template("users.html", users=users)
+	return redirect(url_for('users.user'))		
+
+
 @users.route("/login", methods=['GET', 'POST'])
 def login():
 	session["page"] = "login"	
