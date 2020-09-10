@@ -15,7 +15,7 @@ users = Blueprint("users",__name__)
 @login_required
 def tttkkkfff11221133():
 	if current_user.username == "admin admin" and current_user.email == "admin@mywords.com":
-		users = Users.query.all()
+		users = User.query.all()
 		return render_template("users.html", users=users)
 	return redirect(url_for('users.user'))		
 
