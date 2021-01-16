@@ -1,15 +1,33 @@
-from flask import Blueprint, redirect, url_for,render_template, flash, session, request
+from flask import Blueprint, redirect, url_for,render_template, flash, session, request, send_from_directory 
 from flask_login import login_user, current_user, logout_user, login_required
 from mywords.words.forms import AddWord, EditWord
 from mywords import db
 from mywords.models import Words
 # other import
 from PyDictionary import PyDictionary
+import os
+from mywords import basedir
 
 dictionary = PyDictionary()
 
 words = Blueprint("words",__name__)
 
+@words.route("/download words", methods=['GET', 'POST'])
+@login_required
+def download_words():
+	download_path = os.path.join(basedir,"static","worddownloads")
+	file_name = os.path.join(download_path, "mywords"+str(current_user.id)+".txt")
+	words = Words.query.filter_by(user_id=current_user.id).all()
+	if len(words)==0:
+		flash("Your wordlist is empty!")
+		return redirect(url_for("words.profile"))
+	with open(file_name,"w") as file:
+		for word in words:
+			file.write(word.word)
+			file.write("-")
+			file.write(word.word_data.split("*_*")[0])
+			file.write(word.word_data.split("*_*")[1]+"\n")
+	return send_from_directory(download_path,"mywords"+str(current_user.id)+".txt",as_attachment=True)
 
 @words.route("/add word", methods=['GET', 'POST'])
 @login_required
@@ -52,7 +70,7 @@ def add_word():
 			word_data=word_data+str(key)+": "
 			for line in meaning[str(key)]:
 				word_data=word_data+str(line)+","
-			word_data = word_data[:-2]+"."
+			word_data = word_data[:-1]+"."
 			word_data = word_data+ "\n"
 
 		syn = dictionary.synonym(word)
@@ -60,7 +78,7 @@ def add_word():
 		for ele in syn:
 			synonyms = synonyms +", "+ele
 		synonyms=synonyms[1:]
-		synonyms = "Synonyms: "+synonyms
+		synonyms = "Synonyms: "+synonyms+"."
 		session["worddata"]=word_data+"*_*"+synonyms
 		session["word"]=word
 		return render_template("addword.html", word_there=word_there, form=form, search=True, word=word.capitalize(), word_data=word_data,synonyms=synonyms )
